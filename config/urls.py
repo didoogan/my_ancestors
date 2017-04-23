@@ -16,7 +16,7 @@ urlpatterns = [
     url(settings.ADMIN_URL, admin.site.urls),
 
     # User management
-    url(r'^users/', include('news.users.urls', namespace='users')),
+    url(r'^users/', include('my_ancestors.users.urls', namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
     # Third-party apps urls
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),

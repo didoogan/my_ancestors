@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Django settings for news project.
+Django settings for my_ancestors project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/dev/topics/settings/
@@ -12,8 +12,8 @@ from __future__ import absolute_import, unicode_literals
 
 import environ
 
-ROOT_DIR = environ.Path(__file__) - 3  # (news/config/settings/base.py - 3 = news/)
-APPS_DIR = ROOT_DIR.path('news')
+ROOT_DIR = environ.Path(__file__) - 3  # (my_ancestors/config/settings/base.py - 3 = my_ancestors/)
+APPS_DIR = ROOT_DIR.path('my_ancestors')
 
 # Load operating system environment variables and then prepare to use them
 env = environ.Env()
@@ -63,7 +63,7 @@ THIRD_PARTY_APPS = [
 # Apps specific for this project go here.
 LOCAL_APPS = [
     # custom users app
-    'news.users.apps.UsersConfig',
+    'my_ancestors.users.apps.UsersConfig',
     # Your stuff: custom apps go here
 ]
 
@@ -94,12 +94,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = ()
 # MIGRATIONS CONFIGURATION
 # ------------------------------------------------------------------------------
 MIGRATION_MODULES = {
-    'sites': 'news.contrib.sites.migrations'
+    'sites': 'my_ancestors.contrib.sites.migrations'
 }
 
 # DEBUG
@@ -132,7 +132,7 @@ MANAGERS = ADMINS
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': env.db('DATABASE_URL', default='postgres:///news'),
+    'default': env.db('DATABASE_URL', default='postgres:///my_ancestors'),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
@@ -273,15 +273,15 @@ AUTHENTICATION_BACKENDS = [
 # Some really nice defaults
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-# ACCOUNT_EMAIL_VERIFICATION = 'none'
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 
 ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
-ACCOUNT_ADAPTER = 'news.users.adapters.AccountAdapter'
-SOCIALACCOUNT_ADAPTER = 'news.users.adapters.SocialAccountAdapter'
+ACCOUNT_ADAPTER = 'my_ancestors.users.adapters.AccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'my_ancestors.users.adapters.SocialAccountAdapter'
 
 # Custom user app defaults
 # Select the correct user model
@@ -306,3 +306,87 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = False
 
 
 
+# -*- coding: utf-8 -*-
+"""
+Local settings
+
+- Run in Debug mode
+
+- Use console backend for emails
+
+- Add Django Debug Toolbar
+- Add django-extensions as app
+"""
+
+import socket
+import os
+
+# DEBUG
+# ------------------------------------------------------------------------------
+DEBUG = env.bool('DJANGO_DEBUG', default=True)
+TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
+
+# SECRET CONFIGURATION
+# ------------------------------------------------------------------------------
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
+# Note: This key only used for development and testing.
+SECRET_KEY = env('DJANGO_SECRET_KEY', default='=<_X4Qw`-e#1Fj57e*Bd/[<[>2(F{HJ-qFuSD/P(a8Rhlrh(8k')
+
+# Mail settings
+# ------------------------------------------------------------------------------
+
+EMAIL_PORT = 1025
+
+EMAIL_HOST = 'localhost'
+EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND',
+                    default='django.core.mail.backends.console.EmailBackend')
+
+
+# CACHING
+# ------------------------------------------------------------------------------
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': ''
+    }
+}
+
+# django-debug-toolbar
+# ------------------------------------------------------------------------------
+MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
+INSTALLED_APPS += ['debug_toolbar', ]
+
+INTERNAL_IPS = ['127.0.0.1', '10.0.2.2', ]
+# tricks to have debug toolbar when developing with docker
+if os.environ.get('USE_DOCKER') == 'yes':
+    ip = socket.gethostbyname(socket.gethostname())
+    INTERNAL_IPS += [ip[:-1] + '1']
+
+DEBUG_TOOLBAR_CONFIG = {
+    'DISABLE_PANELS': [
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+    ],
+    'SHOW_TEMPLATE_CONTEXT': True,
+}
+
+# django-extensions
+# ------------------------------------------------------------------------------
+INSTALLED_APPS += ['django_extensions', ]
+
+# TESTING
+# ------------------------------------------------------------------------------
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+# Your local stuff: Below this line define 3rd party library settings
+# ------------------------------------------------------------------------------
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'my_ancestors',
+        'USER': 'didoogan',
+        'PASSWORD': 'didoogan',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}

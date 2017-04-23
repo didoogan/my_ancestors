@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# news documentation build configuration file, created by
+# my_ancestors documentation build configuration file, created by
 # sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -43,7 +43,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'news'
+project = 'my_ancestors'
 copyright = """2017, Dima Timoshenko"""
 
 # The version info for the project you're documenting, acts as replacement for
@@ -187,8 +187,8 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
     ('index',
-     'news.tex',
-     'news Documentation',
+     'my_ancestors.tex',
+     'my_ancestors Documentation',
      """Dima Timoshenko""", 'manual'),
 ]
 
@@ -218,7 +218,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'news', 'news Documentation',
+    ('index', 'my_ancestors', 'my_ancestors Documentation',
      ["""Dima Timoshenko"""], 1)
 ]
 
@@ -232,8 +232,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'news', 'news Documentation',
-     """Dima Timoshenko""", 'news',
+    ('index', 'my_ancestors', 'my_ancestors Documentation',
+     """Dima Timoshenko""", 'my_ancestors',
      """Porject""", 'Miscellaneous'),
 ]
 

@@ -59,7 +59,7 @@ node_modules/
 .env
 
 # User-uploaded media
-news/media/
+my_ancestors/media/
 
 
 

@@ -18,7 +18,7 @@ def update_site_forward(apps, schema_editor):
         id=settings.SITE_ID,
         defaults={
             'domain': 'example.com',
-            'name': 'news'
+            'name': 'my_ancestors'
         }
     )
 
