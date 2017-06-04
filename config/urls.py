@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
-    url(r'^rest-auth/facebook/$', FacebookLogin.as_view(), name='fb_login'),
+    #url(r'^rest-auth/facebook/$', FacebookLogin.as_view(), name='fb_login'),
 
     # Your stuff: custom urls includes go here
     url(r'^api/', include('api.urls', namespace='api')),

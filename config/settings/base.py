@@ -51,12 +51,12 @@ THIRD_PARTY_APPS = [
     'crispy_forms',  # Form layouts
     'allauth',  # registration
     'allauth.account',  # registration
-    'allauth.socialaccount',  # registration
+    'allauth.socialaccount',  # registrationtoken
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
     'rest_auth.registration',
-    'allauth.socialaccount.providers.facebook',
+    #'allauth.socialaccount.providers.facebook',
 
 ]
 
@@ -76,6 +76,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+           'rest_framework.authentication.TokenAuthentication',
+       ),
     # 'DEFAULT_RENDERER_CLASSES': (
     #        'rest_framework.renderers.JSONRenderer',
     #    )
@@ -390,3 +393,5 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+# from .local import *
