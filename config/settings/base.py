@@ -66,6 +66,7 @@ LOCAL_APPS = [
     'my_ancestors.users.apps.UsersConfig',
     # Your stuff: custom apps go here
     'ancestors',
+    'photos',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
