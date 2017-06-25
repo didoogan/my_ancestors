@@ -15,7 +15,7 @@ class ParentSerializer(serializers.ModelSerializer):
 
 class AncestorSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    parents = ParentSerializer(many=True, read_only=True)
+    parents = ParentSerializer(many=True, read_only=True, required=False)
 
     class Meta:
         model = Ancestor

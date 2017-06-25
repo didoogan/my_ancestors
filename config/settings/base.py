@@ -12,7 +12,8 @@ from __future__ import absolute_import, unicode_literals
 
 import environ
 
-ROOT_DIR = environ.Path(__file__) - 3  # (my_ancestors/config/settings/base.py - 3 = my_ancestors/)
+ROOT_DIR = environ.Path(
+    __file__) - 3  # (my_ancestors/config/settings/base.py - 3 = my_ancestors/)
 APPS_DIR = ROOT_DIR.path('my_ancestors')
 
 # Load operating system environment variables and then prepare to use them
@@ -56,7 +57,7 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'rest_auth.registration',
-    #'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.facebook',
 
 ]
 
@@ -79,8 +80,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-           'rest_framework.authentication.TokenAuthentication',
-       ),
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
+    ),
     # 'DEFAULT_RENDERER_CLASSES': (
     #        'rest_framework.renderers.JSONRenderer',
     #    )
@@ -121,7 +124,8 @@ FIXTURE_DIRS = (
 
 # EMAIL CONFIGURATION
 # ------------------------------------------------------------------------------
-EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND',
+                    default='django.core.mail.backends.smtp.EmailBackend')
 
 # MANAGER CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -140,7 +144,6 @@ DATABASES = {
     'default': env.db('DATABASE_URL', default='postgres:///my_ancestors'),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
-
 
 # GENERAL CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -283,8 +286,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
-
-ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
+ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION',
+                                      True)
 ACCOUNT_ADAPTER = 'my_ancestors.users.adapters.AccountAdapter'
 SOCIALACCOUNT_ADAPTER = 'my_ancestors.users.adapters.SocialAccountAdapter'
 
@@ -296,7 +299,6 @@ LOGIN_URL = 'account_login'
 
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
-
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 ADMIN_URL = r'^admin/'
@@ -335,7 +337,8 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key only used for development and testing.
-SECRET_KEY = env('DJANGO_SECRET_KEY', default='=<_X4Qw`-e#1Fj57e*Bd/[<[>2(F{HJ-qFuSD/P(a8Rhlrh(8k')
+SECRET_KEY = env('DJANGO_SECRET_KEY',
+                 default='=<_X4Qw`-e#1Fj57e*Bd/[<[>2(F{HJ-qFuSD/P(a8Rhlrh(8k')
 
 # Mail settings
 # ------------------------------------------------------------------------------
@@ -345,7 +348,6 @@ EMAIL_PORT = 1025
 EMAIL_HOST = 'localhost'
 EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND',
                     default='django.core.mail.backends.console.EmailBackend')
-
 
 # CACHING
 # ------------------------------------------------------------------------------

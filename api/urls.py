@@ -1,5 +1,14 @@
 from django.conf.urls import url, include
+from rest_framework import routers
 
-urlpatterns = [
-    url(r'user/', include('api.user.urls')),
-]
+from api.ancestors.views import AncestorViewSet
+from api.user.views import UserViewSet
+
+router = routers.DefaultRouter()
+urlpatterns = []
+router.register(r'ancestors', AncestorViewSet)
+router.register(r'users', UserViewSet)
+
+urlpatterns = []
+
+urlpatterns += router.urls
