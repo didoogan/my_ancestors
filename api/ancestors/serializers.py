@@ -19,5 +19,6 @@ class AncestorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ancestor
-        fields = ('id', 'user', 'parents', 'birth', 'death', 'bio',
-                  'first_name', 'last_name', 'third_name')
+        # fields = ('id', 'user', 'parents', 'birth', 'death', 'bio',
+        #           'first_name', 'last_name', 'third_name')
+        fields = '__all__'
