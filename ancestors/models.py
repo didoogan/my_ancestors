@@ -5,7 +5,8 @@ from django.db import models
 class Ancestor(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, blank=True,
                                 null=True)
-    parents = models.ManyToManyField("self", blank=True, null=True)
+    parents = models.ManyToManyField("self", blank=True, null=True,
+                                     related_name="children")
     birth = models.DateField(null=True, blank=True)
     death = models.DateField(null=True, blank=True)
     bio = models.TextField()

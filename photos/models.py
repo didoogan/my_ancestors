@@ -6,7 +6,7 @@ from ancestors.models import Ancestor
 class Photo(models.Model):
     photo = models.ImageField()
     uploaded = models.DateField(auto_now_add=True)
-    ancestor = models.ForeignKey(Ancestor)
+    ancestor = models.ForeignKey(Ancestor, related_name='photos')
     is_avatar = models.BooleanField(default=False)
 
     def __str__(self):
