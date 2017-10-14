@@ -16,9 +16,13 @@ class ParentSerializer(serializers.ModelSerializer):
 class AncestorSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     parents = ParentSerializer(many=True, read_only=True, required=False)
+    children = ParentSerializer(many=True, read_only=True, required=False,
+                                source='childrens')
+    siblings = ParentSerializer(many=True, read_only=True, required=False)
 
     class Meta:
         model = Ancestor
         # fields = ('id', 'user', 'parents', 'birth', 'death', 'bio',
         #           'first_name', 'last_name', 'third_name')
         fields = '__all__'
+

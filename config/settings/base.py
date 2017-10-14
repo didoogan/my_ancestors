@@ -104,6 +104,12 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = ()
+ALLOWED_HOSTS = (
+    '0.0.0.0',
+    '127.0.0.1',
+    '192.168.1.13',
+
+)
 # MIGRATIONS CONFIGURATION
 # ------------------------------------------------------------------------------
 MIGRATION_MODULES = {
