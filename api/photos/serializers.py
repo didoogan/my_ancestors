@@ -3,7 +3,7 @@ from rest_framework import serializers
 from photos.models import Photo
 
 
-class PhotoSerializer(serializers.ModelSerizlizer):
+class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = '__all__'
+        fields = ('id', 'photo', 'uploaded', 'ancestor', 'is_avatar')

@@ -7,6 +7,7 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
+from ancestors.models import Ancestor
 from .managers import CustomManager
 
 
@@ -34,3 +35,7 @@ class User(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'email': self.email})
+
+    def save(self, *args, **kwargs):
+        super(User, self).save(*args, **kwargs)
+        Ancestor.objects.get_or_create(user=self)

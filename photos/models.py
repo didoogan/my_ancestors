@@ -10,4 +10,7 @@ class Photo(models.Model):
     is_avatar = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.ancestor.user.email
+        return self.ancestor.first_name
+
+    class Meta:
+        unique_together = ('ancestor', 'is_avatar')

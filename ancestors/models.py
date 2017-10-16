@@ -3,9 +3,6 @@ from django.db import models
 
 
 class Ancestor(models.Model):
-    MALE = 'male'
-    FEMALE = 'female'
-
     user = models.OneToOneField(settings.AUTH_USER_MODEL, blank=True,
                                 null=True)
     parents = models.ManyToManyField("self", blank=True,
@@ -17,6 +14,11 @@ class Ancestor(models.Model):
     first_name = models.CharField(max_length=20, null=True, blank=True)
     last_name = models.CharField(max_length=20, null=True, blank=True)
     third_name = models.CharField(max_length=20, null=True, blank=True)
+    gender = models.NullBooleanField()
+    abstract = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('first_name', 'last_name', 'birth')
 
     @property
     def childrens(self):
@@ -26,12 +28,14 @@ class Ancestor(models.Model):
     def siblings(self):
         try:
             return self.parents.all()[0].children.exclude(id=self.id)
-        except Ancestor.IndexError:
+        except IndexError:
             return []
 
     def get_full_name(self):
-        return '{} {} {}'.format(self.first_name, self.last_name,
+        return '<Ancestor> {} {} {}'.format(self.first_name, self.last_name,
                                  self.third_name)
 
     def __str__(self):
+        if self.abstract:
+            return '<Abstract Ancestor>'
         return self.get_full_name()
