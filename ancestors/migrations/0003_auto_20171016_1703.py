@@ -12,11 +12,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # migrations.AddField(
-        #     model_name='ancestor',
-        #     name='gender',
-        #     field=models.NullBooleanField(),
-        # ),
+        migrations.AddField(
+            model_name='ancestor',
+            name='gender',
+            field=models.NullBooleanField(),
+        ),
         migrations.AlterField(
             model_name='ancestor',
             name='parents',

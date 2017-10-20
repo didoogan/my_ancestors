@@ -11,9 +11,9 @@ class Ancestor(models.Model):
     birth = models.DateField(null=True, blank=True)
     death = models.DateField(null=True, blank=True)
     bio = models.TextField()
-    first_name = models.CharField(max_length=20, null=True, blank=True)
-    last_name = models.CharField(max_length=20, null=True, blank=True)
-    third_name = models.CharField(max_length=20, null=True, blank=True)
+    first_name = models.CharField(max_length=120, blank=True)
+    last_name = models.CharField(max_length=120, blank=True)
+    third_name = models.CharField(max_length=120, blank=True)
     gender = models.NullBooleanField()
     abstract = models.BooleanField(default=False)
 
@@ -32,7 +32,7 @@ class Ancestor(models.Model):
             return []
 
     def get_full_name(self):
-        return '<Ancestor> {} {} {}'.format(self.first_name, self.last_name,
+        return '<Ancestor> {} {} {}'.format(self.last_name, self.first_name,
                                  self.third_name)
 
     def __str__(self):

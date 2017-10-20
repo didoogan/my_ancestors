@@ -14,27 +14,19 @@ class ParentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# class AncestorSerializer(serializers.ModelSerializer):
-#     user = UserSerializer(read_only=True)
-#     parents = ParentSerializer(many=True, read_only=True, required=False)
-#     children = ParentSerializer(many=True, read_only=True, required=False,
-#                                 source='childrens')
-#     siblings = ParentSerializer(many=True, read_only=True, required=False)
-#     photos = PhotoSerializer(many=True, read_only=True, required=False)
-#
-#     class Meta:
-#         model = Ancestor
-#         # fields = ('id', 'user', 'parents', 'birth', 'death', 'bio',
-#         #           'first_name', 'last_name', 'third_name')
-#         fields = '__all__'
+class ParentsPrimaryKeyRelatedField(serializers.PrimaryKeyRelatedField):
+    def to_representation(self, value):
+        if value.abstract is True:
+            return
+        return super(ParentsPrimaryKeyRelatedField, self).to_representation(value)
+
 
 class AncestorSerializer(ParentSerializer):
     children = serializers.PrimaryKeyRelatedField(many=True, required=False,
                             queryset=Ancestor.objects.all())
     siblings = serializers.PrimaryKeyRelatedField(many=True, required=False,
                             queryset=Ancestor.objects.all())
-    # parents = serializers.PrimaryKeyRelatedField(many=True, required=False,
-    #                         queryset=Ancestor.objects.filter(abstract=False))
+    parents = ParentsPrimaryKeyRelatedField(many=True, queryset=Ancestor.objects.all())
 
     class Meta:
         model = Ancestor
