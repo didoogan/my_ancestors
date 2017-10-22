@@ -14,7 +14,7 @@ class Ancestor(models.Model):
                                        related_name='ancestor')
     birth = models.DateField(null=True, blank=True)
     death = models.DateField(null=True, blank=True)
-    bio = models.TextField()
+    bio = models.TextField(blank=True)
     first_name = models.CharField(max_length=120, blank=True)
     last_name = models.CharField(max_length=120, blank=True)
     third_name = models.CharField(max_length=120, blank=True)

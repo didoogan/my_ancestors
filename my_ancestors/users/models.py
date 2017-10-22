@@ -35,7 +35,3 @@ class User(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'email': self.email})
-
-    def save(self, *args, **kwargs):
-        super(User, self).save(*args, **kwargs)
-        Ancestor.objects.get_or_create(user=self)

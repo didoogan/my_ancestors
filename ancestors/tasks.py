@@ -7,7 +7,7 @@ from ancestors.models import Ancestor
 def update_ancestors(actor_id, acted_id, action):
     actor = Ancestor.objects.get(id=actor_id)
     acted = Ancestor.objects.get(id=acted_id)
-    ancestors_ids = actor.ancestors.all().values_list('id', flat=True)
+    ancestors_ids = list(actor.ancestors.all().values_list('id', flat=True))
     ancestors_ids.append(actor.id)
     ancestors = Ancestor.objects.filter(id__in=ancestors_ids)\
         .prefetch_related('ancestors')

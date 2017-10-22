@@ -18,5 +18,7 @@ class AncestorViewSet(viewsets.ModelViewSet):
             queryset =  Ancestor.objects.filter(id__in=ids)
         else:
             queryset = Ancestor.objects.all()
+        if request.query_params.get('without_user', False):
+            queryset = queryset.filter(user__isnull=True)
         serializer = AncestorSerializer(queryset, many=True)
         return Response(serializer.data)
