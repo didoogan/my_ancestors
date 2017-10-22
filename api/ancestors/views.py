@@ -1,6 +1,5 @@
-from rest_framework import status
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from ancestors.models import Ancestor
@@ -10,7 +9,7 @@ from api.ancestors.serializers import AncestorSerializer
 class AncestorViewSet(viewsets.ModelViewSet):
     queryset = Ancestor.objects.all()
     serializer_class = AncestorSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def list(self, request, *args, **kwargs):
         ids_str = request.query_params.get('ids', False)

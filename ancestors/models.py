@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Ancestor(models.Model):
@@ -8,6 +10,8 @@ class Ancestor(models.Model):
     parents = models.ManyToManyField("self", blank=True,
                                      related_name="children",
                                      symmetrical=False)
+    ancestors = models.ManyToManyField("self", blank=True,
+                                       related_name='ancestor')
     birth = models.DateField(null=True, blank=True)
     death = models.DateField(null=True, blank=True)
     bio = models.TextField()
@@ -34,6 +38,11 @@ class Ancestor(models.Model):
     def get_full_name(self):
         return '<Ancestor> {} {} {}'.format(self.last_name, self.first_name,
                                  self.third_name)
+
+    # def save(self, *args, **kwargs):
+    #     ancestor = super(Ancestor, self).save(*args, **kwargs)
+    #     for person in ancestor.ancestors.all():
+    #         person.ancestors.add(ancestor)
 
     def __str__(self):
         if self.abstract:

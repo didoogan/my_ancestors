@@ -404,4 +404,5 @@ DATABASES = {
     }
 }
 
-# from .local import *
+# Celery config
+CELERY_BROKER_URL = 'amqp://localhost'

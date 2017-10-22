@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from ancestors.models import Ancestor
+from ancestors.tasks import update_ancestors
 from api.photos.serializers import PhotoSerializer
 from api.user.serializers import UserSerializer
 
@@ -26,15 +27,18 @@ class AncestorSerializer(ParentSerializer):
                             queryset=Ancestor.objects.all())
     siblings = serializers.PrimaryKeyRelatedField(many=True, required=False,
                             queryset=Ancestor.objects.all())
-    parents = ParentsPrimaryKeyRelatedField(many=True, queryset=Ancestor.objects.all())
+    parents = ParentsPrimaryKeyRelatedField(many=True,
+                                            queryset=Ancestor.objects.all())
 
     class Meta:
+        extra_kwargs = {'ancestors': {'read_only': True}}
         model = Ancestor
         fields = '__all__'
 
     def create(self, validated_data):
         siblings = validated_data.pop('siblings', [])
         parents = validated_data.pop('parents', [])
+        is_owner = validated_data.pop('is_owner', False)
         if not parents:
             for sibling in siblings:
                 for parent in sibling.parents.all():
@@ -43,8 +47,11 @@ class AncestorSerializer(ParentSerializer):
             parents.append(Ancestor.objects.create(abstract=True))
         children = validated_data.pop('children', False)
         user = self.context.get('request').user
-        validated_data['user'] = user
+        if is_owner:
+            validated_data['user'] = user
         ancestor = Ancestor.objects.create(**validated_data)
+        if not is_owner:
+            update_ancestors(user.ancestor.get().id, ancestor.id, 'create')
         # Children should have the same parents
         siblings.append(ancestor)
         if parents and siblings:
