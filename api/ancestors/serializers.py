@@ -75,11 +75,9 @@ class AncestorSerializer(ParentSerializer):
         if siblings:
             siblings = self.get_all_siblings(siblings)
             for sibling in siblings:
-                for parent in sibling.parents.all():
-                    if parent.abstract:
-                        continue
+                for parent in sibling.parents.filter(abstract=False):
                     parents.add(parent)
-            # if your siblings have not abstract parents, your should
+            # if your siblings have not-abstract parents, your should
             # pop abstract parent from parents list
             if abstract_parent and len(parents) > 1:
                 parents.pop()
@@ -94,10 +92,13 @@ class AncestorSerializer(ParentSerializer):
         ancestor = Ancestor.objects.create(**validated_data)
         for parent in parents:
             ancestor.parents.add(parent)
+        # Celery task "update_ancestors" used for adding new ancestor to filed
+        # "ancestors" for all related ancestors
         if not is_owner:
             update_ancestors(user.ancestor.id, ancestor.id, 'create')
         for child in children:
             child.parents.add(ancestor)
+            update_ancestors(ancestor, child, 'create')
         return ancestor
 
 
@@ -109,18 +110,20 @@ class AncestorSerializer(ParentSerializer):
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.gender = validated_data.get('gender', instance.gender)
         instance.user = validated_data.get('user', instance.user)
-        siblings = validated_data.pop('siblings', False)
-        parents = validated_data.pop('parents', False)
-        children = validated_data.pop('children', False)
+        siblings = validated_data.pop('siblings', [])
+        parents = validated_data.pop('parents', [])
+        children = validated_data.pop('children', [])
         is_owner = instance.user == self.context.get('request').user
         if parents:
-            instance.ancestors.clear()
+            instance.parents.clear()
             for parent in parents:
                 instance.ancestors.add(parent)
-        if siblings:
-            for sibling in siblings:
-                for parent in instance.parents.all():
-                    sibling.parents.add(parent)
+
+        for sibling in siblings:
+            for parent in instance.parents.all():
+                sibling.parents.add(parent)
+        for child in children:
+            child.parents.add(instance)
         instance.save()
         return instance
 
