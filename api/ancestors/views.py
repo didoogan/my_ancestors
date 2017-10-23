@@ -1,11 +1,9 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from ancestors.models import Ancestor
 from api.ancestors.serializers import AncestorSerializer
 from helper.perimissions import IsAncestorOrReadOnly
-from rest_framework.decorators import  permission_classes
 
 
 class AncestorViewSet(viewsets.ModelViewSet):
@@ -25,5 +23,3 @@ class AncestorViewSet(viewsets.ModelViewSet):
         serializer = AncestorSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def update(self, request, *args, **kwargs):
-        super(AncestorViewSet, self).update(request, *args, **kwargs)

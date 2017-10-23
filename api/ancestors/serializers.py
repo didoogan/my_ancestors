@@ -117,7 +117,7 @@ class AncestorSerializer(ParentSerializer):
         if parents:
             instance.parents.clear()
             for parent in parents:
-                instance.ancestors.add(parent)
+                instance.parents.add(parent)
 
         for sibling in siblings:
             for parent in instance.parents.all():
