@@ -4,12 +4,14 @@ from rest_framework.response import Response
 
 from ancestors.models import Ancestor
 from api.ancestors.serializers import AncestorSerializer
+from helper.perimissions import IsAncestorOrReadOnly
+from rest_framework.decorators import  permission_classes
 
 
 class AncestorViewSet(viewsets.ModelViewSet):
     queryset = Ancestor.objects.all()
     serializer_class = AncestorSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAncestorOrReadOnly,)
 
     def list(self, request, *args, **kwargs):
         ids_str = request.query_params.get('ids', False)
@@ -22,3 +24,6 @@ class AncestorViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(user__isnull=True)
         serializer = AncestorSerializer(queryset, many=True)
         return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        super(AncestorViewSet, self).update(request, *args, **kwargs)
