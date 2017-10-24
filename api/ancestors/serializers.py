@@ -106,10 +106,13 @@ class AncestorSerializer(ParentSerializer):
         instance.birth = validated_data.get('birth', instance.birth)
         instance.death = validated_data.get('death', instance.death)
         instance.bio = validated_data.get('bio', instance.bio)
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.first_name = validated_data.get('first_name',
+                                                 instance.first_name)
+        instance.last_name = validated_data.get('last_name',
+                                                instance.last_name)
         instance.gender = validated_data.get('gender', instance.gender)
         instance.user = validated_data.get('user', instance.user)
+        instance.ava = validated_data.get('ava', instance.ava)
         siblings = validated_data.pop('siblings', [])
         parents = validated_data.pop('parents', [])
         children = validated_data.pop('children', [])

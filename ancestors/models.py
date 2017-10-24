@@ -19,6 +19,7 @@ class Ancestor(models.Model):
     last_name = models.CharField(max_length=120, blank=True)
     third_name = models.CharField(max_length=120, blank=True)
     gender = models.NullBooleanField()
+    ava = models.ImageField(null=True)
     abstract = models.BooleanField(default=False)
 
     class Meta:
