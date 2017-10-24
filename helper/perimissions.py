@@ -3,11 +3,12 @@ from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 from ancestors.models import Ancestor
 
+UNSAFE_METHODS = ('PUT', 'PATCH', 'DELETE')
+
 
 class IsAncestorOrReadOnly(BasePermission):
 
     def has_permission(self, request, view):
-        UNSAFE_METHODS = ('PUT', 'PATCH', 'DELETE')
         if request.method in SAFE_METHODS or request.method == 'POST' and \
                 request.user and is_authenticated(request.user):
             return True
